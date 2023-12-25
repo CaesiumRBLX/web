@@ -8,9 +8,9 @@ export async function getThumbnail(userId: number): Promise<string | undefined> 
 		return thumbnailCache.get(userId)!
 	}
 
-	let thumbnail = await noblox.getPlayerThumbnail(userId, 720, "png", false, "headshot")
+	const thumbnail = await noblox.getPlayerThumbnail(userId, 720, "png", false, "headshot")
 	if (thumbnail[0].state == "Completed") {
-		let url = thumbnail[0].imageUrl!
+		const url = thumbnail[0].imageUrl!
 		thumbnailCache.set(userId, url)
 		return url
 	}
@@ -22,7 +22,7 @@ export async function getDisplayName(userId: number): Promise<string | undefined
 		return displayNameCache.get(userId)!
 	}
 
-	let info = await noblox.getPlayerInfo(userId)
+	const info = await noblox.getPlayerInfo(userId)
 	displayNameCache.set(userId, info.displayName)
 	return info.displayName
 }

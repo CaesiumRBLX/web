@@ -7,10 +7,10 @@ interface Role {
 	id: number;
 }
 
-let roleCache: Map<number, { roles: Role[], cacheCreated: number }> = new Map()
+const roleCache: Map<number, { roles: Role[], cacheCreated: number }> = new Map()
 
 export async function getRoles(groupId: number): Promise<Role[]> {
-	let cachehit = roleCache.get(groupId)
+	const cachehit = roleCache.get(groupId)
 	if (cachehit) {
 		// if cached roles are from less than 10 minutes ago, return those
 		if ((Math.abs(Date.now() - cachehit.cacheCreated) / (1000 * 60)) < 10) {
@@ -20,8 +20,9 @@ export async function getRoles(groupId: number): Promise<Role[]> {
 		}
 	}
 
-	let roles: Role[] = await noblox.getRoles(groupId)
+	const roles: Role[] = await noblox.getRoles(groupId)
 	roles.sort((a, b) => a.rank - b.rank)
+	roles.splice(0,1)
 
 	roleCache.set(groupId, { roles, cacheCreated: Date.now() })
 	return roles
